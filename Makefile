@@ -67,6 +67,6 @@ $(BIN): $(OBJS)
 
 # DO NOT DELETE
 
-wdparse.o: common.h wdparse.h qualify.h
+wdparse.o: common.h qualify.h
 common.o: common.h
 qualify.o: qualify.h

@@ -14,7 +14,6 @@
 
 //lint -esym(755, LOOP_FOREVER, MAX_EXT_SIZE, MAXLINE)
 //lint -esym(756, u16, u32, ul2uc_t)
-//lint -esym(757, total_ptime)
 //lint -esym(759, base_path, convert_to_commas)
 //lint -esym(768, ul2uc_u::uc, ul2uc_u::ul, ul2uc_u::us)
 
