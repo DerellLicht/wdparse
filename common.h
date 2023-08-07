@@ -20,7 +20,7 @@ typedef  unsigned int         u32 ;
 #define FILE_ATTRIBUTE_VOLID  0x00000008
 
 #ifndef PATH_MAX
-#define  PATH_MAX       260
+#define  PATH_MAX       1024
 #endif
 
 #define  LOOP_FOREVER   true

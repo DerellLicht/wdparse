@@ -1,11 +1,6 @@
 //**********************************************************************************
 //  wdparse.cpp 
-//  This will be a generic utility to identify all files specified 
-//  by a provided file spec with wildcards
-//  This is intended as a template for reading all files in current directory,
-//  then performing some task on them.  The print statement at the end
-//  can be replaced with a function call to perform the desired operation
-//  on each discovered file.
+//  Read Weather Display log files and extract desired data
 //  
 //  Written by:  Derell Licht
 //**********************************************************************************
@@ -13,9 +8,10 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>  //  PATH_MAX
+#include <ctype.h>   //  isdigit()
 
 #include "common.h"
-// #include "wdparse.h"
+#include "wd_info.h"
 #include "qualify.h"
 
 WIN32_FIND_DATA fdata ; //  long-filename file struct
@@ -36,17 +32,26 @@ bool show_all = true ;
 //lint -e10  Expecting '}'
 
 //************************************************************
-struct ffdata {
-   uchar          attrib ;
-   FILETIME       ft ;
-   ULONGLONG      fsize ;
-   char           *filename ;
-   uchar          dirflag ;
-   struct ffdata  *next ;
-} ;
-
-static ffdata *ftop  = NULL;
+ffdata *ftop  = NULL;
 static ffdata *ftail = NULL;
+
+//**********************************************************************************
+//  filename format is m[m]yyyylg.txt
+//**********************************************************************************
+static uint extract_month_and_year(char const *fname, char *mystr)
+{
+   uint len = 0 ;
+   while (LOOP_FOREVER) {
+      if (!isdigit(*fname)) {
+         break ;
+      }
+      mystr[len] = *fname ;
+      len++ ;
+      fname++ ;
+   }
+   mystr[len] = 0 ;
+   return len ;
+}
 
 //**********************************************************************************
 int read_files(char *filespec)
@@ -90,6 +95,10 @@ int read_files(char *filespec)
          fn_okay = 0;
       else
          fn_okay = 1;
+         
+      if (fn_okay  &&  strncmp(fdata.cFileName, "backup", 6) == 0) {
+         fn_okay = 0;
+      }
 
       if (fn_okay) {
          // printf("DIRECTORY %04X %s\n", fdata.attrib, fdata.cFileName) ;
@@ -99,11 +108,12 @@ int read_files(char *filespec)
          //****************************************************
          //  allocate and initialize the structure
          //****************************************************
-         // ftemp = new ffdata;
-         ftemp = (struct ffdata *) malloc(sizeof(ffdata)) ;
-         if (ftemp == NULL) {
-            return -errno;
-         }
+         // ftemp = (struct ffdata *) malloc(sizeof(ffdata)) ;
+         ftemp = (struct ffdata *) new ffdata ;
+         //  new does not return errno on OUT_OF_MEMORY, it just aborts
+         // if (ftemp == NULL) {
+         //    return -errno;
+         // }
          memset((char *) ftemp, 0, sizeof(ffdata));
 
          //  convert filename to lower case if appropriate
@@ -127,10 +137,33 @@ int read_files(char *filespec)
          iconv.u[1] = fdata.nFileSizeHigh;
          ftemp->fsize = iconv.i;
 
-         ftemp->filename = (char *) malloc(strlen ((char *) fdata.cFileName) + 1);
+         // ftemp->filename = (char *) malloc(strlen ((char *) fdata.cFileName) + 1);
+         ftemp->filename = (char *) new char[(strlen ((char *) fdata.cFileName) + 1)];
          strcpy (ftemp->filename, (char *) fdata.cFileName);
 
          ftemp->dirflag = ftemp->attrib & FILE_ATTRIBUTE_DIRECTORY;
+         
+         //  extract month/year info from filename
+         char mystr[7] ;
+         uint nlen = extract_month_and_year(ftemp->filename, mystr);
+         switch (nlen) {
+         case 5:
+            ftemp->year = (uint) atoi(&mystr[1]);
+            mystr[1] = 0 ;
+            ftemp->month = (uint) atoi(mystr);
+            break ;
+            
+         case 6:
+            ftemp->year = (uint) atoi(&mystr[2]);
+            mystr[2] = 0 ;
+            ftemp->month = (uint) atoi(mystr);
+            break ;
+            
+         default:
+            ftemp->month = 0 ;
+            ftemp->year = nlen ;
+            break ;
+         }
 
          //****************************************************
          //  add the structure to the file list
@@ -155,7 +188,7 @@ search_next_file:
 }
 
 //**********************************************************************************
-char file_spec[PATH_MAX+1] = "" ;
+char file_spec[PATH_MAX+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
 
 int main(int argc, char **argv)
 {
@@ -189,18 +222,24 @@ int main(int argc, char **argv)
    base_len = strlen(base_path) ;
    // printf("base path: %s\n", base_path);
    
+   //  it looks like target path is:
+   // C:\WeatherDisplay\logfiles\*lg.txt
+   // where filename is m[m]yyyylg.txt
+   
    result = read_files(file_spec);
    if (result < 0) {
       printf("filespec: %s, %s\n", file_spec, strerror(-result));
+      return -result ;
    }
-   else {
-      printf("filespec: %s, %u found\n", file_spec, filecount);
-      if (filecount > 0) {
-         puts("");
-         for (ffdata *ftemp = ftop; ftemp != NULL; ftemp = ftemp->next) {
-            printf("%s\n", ftemp->filename);
-         }
-
+   
+   //  sort file list by month/year
+   sort_filelist();
+   
+   printf("filespec: %s, %u found\n", file_spec, filecount);
+   if (filecount > 0) {
+      puts("");
+      for (ffdata *ftemp = ftop; ftemp != NULL; ftemp = ftemp->next) {
+         process_wd_log_file(ftemp) ;  //lint !e534
       }
    }
    return 0;

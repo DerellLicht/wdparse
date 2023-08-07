@@ -27,7 +27,8 @@ endif
 
 LIBS=-lshlwapi
 
-CPPSRC=wdparse.cpp common.cpp qualify.cpp
+CPPSRC=wd_info.cpp wd_parse.cpp common.cpp qualify.cpp
+CPPSRC+=nsort.cpp
 
 OBJS = $(CSRC:.c=.o) $(CPPSRC:.cpp=.o)
 
@@ -67,6 +68,8 @@ $(BIN): $(OBJS)
 
 # DO NOT DELETE
 
-wdparse.o: common.h qualify.h
+wd_info.o: common.h wd_info.h qualify.h
+wd_parse.o: common.h wd_info.h
 common.o: common.h
 qualify.o: qualify.h
+nsort.o: common.h wd_info.h
