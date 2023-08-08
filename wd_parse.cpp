@@ -9,6 +9,7 @@
 #include <stdio.h>
 #ifdef _lint
 #include <errno.h>
+#include <stdlib.h>
 #endif
 
 #include "common.h"
@@ -100,8 +101,8 @@ static uint wd_parse_label_line(char *instr)
 //  file line 1: format line:
 // day month year hour minute 
 // temperature   humidity     dewpoint   
-// barometer    windspeed   gustspeed direction  rainlastmin    
-// dailyrain  monthlyrain   yearlyrain  heatindex
+// barometer    windspeed   gustspeed direction  
+// rainlastmin dailyrain  monthlyrain   yearlyrain  heatindex
 //  
 //  for first pass, just collect/display *all* of these values...
 // typedef enum {
@@ -113,7 +114,61 @@ static uint wd_parse_label_line(char *instr)
 // WD_MAX_RAIN_DAILY
 // } data_req_t ;
 //**********************************************************************************
+// 1  7 2023  0  0 63.7  79 57.1 29.867 0.0 0.0 307  0.000 0.000 0.050 31.799 63.7
+//31  7 2023  7 52 61.4  87 57.5 29.979 0.0 0.0  35  0.000 0.000 0.000 0.000 61.4
+//**********************************************************************************
+typedef struct wd_data_s {
+   uint day ;
+   uint month ;
+   uint year ;
+   uint hour ;
+   uint minute ;
+   double temp ;
+   uint humidity ;
+   double dewpoint ;
+   double barometer ;
+   double windspeed ;
+   double gustspeed ;
+   uint direction ;
+   double rainlastmin ;
+   double dailyrain ;
+   double monthlyrain ;
+   double yearlyrain ;
+   double heatindex ;
+   wd_data_s *next ;
+} wd_data_t, *wd_data_p ;
 
+//  no, we don't need a list of lines in all the files...
+//  we just want to collect summary data
+// static wd_data_p wdtop = NULL ;
+// static wd_data_p wdtail = NULL ;
+static wd_data_t wd_totals ;
+
+//**********************************************************************************
+void wd_init_summary_data(void)
+{
+   ZeroMemory((char *) &wd_totals, sizeof(wd_data_t));
+}
+
+//**********************************************************************************
+static int wd_parse_data_row(char *instr)
+{
+   wd_data_p wdtemp = new wd_data_t ;
+   ZeroMemory(wdtemp, sizeof(wd_data_t));
+   
+   instr = next_field(instr);
+   wdtemp->day = (uint) atoi(instr);
+   instr = next_field(instr);
+   wdtemp->month = (uint) atoi(instr);
+   instr = next_field(instr);
+   wdtemp->year = (uint) atoi(instr);
+   instr = next_field(instr);
+   wdtemp->hour = (uint) atoi(instr);
+   instr = next_field(instr);
+   wdtemp->minute = (uint) atoi(instr);
+   
+   return 0;
+}
 
 //**********************************************************************************
 int process_wd_log_file(ffdata const * const ftemp)
@@ -142,8 +197,13 @@ int process_wd_log_file(ffdata const * const ftemp)
    lcount = 0 ;
    while(fread(inpstr, 1, sizeof(inpstr), fptr) != 0) {
       lcount++ ;
+      int result = wd_parse_data_row(inpstr);
+      if (result != 0) {
+         printf("parse error [L %u]: %s\n", lcount, ftemp->filename);
+         goto exit_point ;
+      }
    }
-   printf("okay: lcount: %u, %2u,%4u %s\n", lcount, ftemp->month, ftemp->year, ftemp->filename);
+   printf("okay: lines: %5u, %s\n", lcount, ftemp->filename);
    
 exit_point:   
    fclose(fptr);

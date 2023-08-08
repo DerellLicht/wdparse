@@ -34,6 +34,7 @@ struct ffdata {
 extern ffdata *ftop  ;
 
 //  wd_parse.cpp
+void wd_init_summary_data(void);
 int process_wd_log_file(ffdata const * const ftemp);
 
 //  nsort.cpp

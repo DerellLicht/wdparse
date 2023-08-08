@@ -250,6 +250,8 @@ int main(int argc, char **argv)
    base_len = strlen(base_path) ;
    // printf("base path: %s\n", base_path);
    
+   wd_init_summary_data();
+
    //  it looks like target path is:
    // C:\WeatherDisplay\logfiles\*lg.txt
    // where filename is m[m]yyyylg.txt
