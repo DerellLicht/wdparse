@@ -223,11 +223,6 @@ static void wd_check_records(void)
    if (wd_current.dailyrain > wd_max_rain_daily.dailyrain) {
       wd_max_rain_daily = wd_current ;
    }
-   //  This doesn't always give desirable results;
-   //  Since rainfall totals reset on July 1st,
-   //  if we got more rain in second half of year, than in first half,
-   //  this gives misleading data...
-   //  We need a way to monitor these values only in May/June
    if (wd_current.yearlyrain > wd_max_rain_yearly.yearlyrain) {
       wd_max_rain_yearly = wd_current ;
    }
