@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #endif
 
+//  I don't know *why* lint thinks this??
+//lint -esym(119, strtod)  Too many arguments (2) for prototype 'strtod(const char *)'
+
 #include "common.h"
 #include "wd_info.h"
 
@@ -104,19 +107,8 @@ static uint wd_parse_label_line(char *instr)
 // barometer    windspeed   gustspeed direction  
 // rainlastmin dailyrain  monthlyrain   yearlyrain  heatindex
 //  
-//  for first pass, just collect/display *all* of these values...
-// typedef enum {
-// WD_UNKNOWN=0,
-// WD_MAX_TEMP,
-// WD_MIN_TEMP,
-// WD_MAX_WIND,
-// WD_MAX_GUST,
-// WD_MAX_RAIN_DAILY
-// } data_req_t ;
 //**********************************************************************************
-// 1  7 2023  0  0 63.7  79 57.1 29.867 0.0 0.0 307  0.000 0.000 0.050 31.799 63.7
-//31  7 2023  7 52 61.4  87 57.5 29.979 0.0 0.0  35  0.000 0.000 0.000 0.000 61.4
-//**********************************************************************************
+//lint -esym(751, wd_data_p)  local typedef not referenced
 typedef struct wd_data_s {
    uint day ;
    uint month ;
@@ -145,29 +137,95 @@ typedef struct wd_data_s {
 static wd_data_t wd_totals ;
 
 //**********************************************************************************
-void wd_init_summary_data(void)
+static wd_data_t wd_current ; //  export to caller
+
+// static int wd_parse_data_row(char *instr, uint lcount, char *fname)
+static int wd_parse_data_row(char *instr)
 {
-   ZeroMemory((char *) &wd_totals, sizeof(wd_data_t));
+   // wd_data_p wdtemp = new wd_data_t ;
+   ZeroMemory((char *) &wd_current, sizeof(wd_data_t));
+   
+// 1  7 2023  0  0 63.7  79 57.1 29.867 0.0 0.0 307  0.000 0.000 0.050 31.799 63.7
+//31  7 2023  7 52 61.4  87 57.5 29.979 0.0 0.0  35  0.000 0.000 0.000 0.000 61.4
+
+   //  pull time/data
+   //  for first field, do *not* depend on next_field to work properly...
+   //  If no space/tab is present, this fails
+   // instr = next_field(instr);
+   if (*instr == SPC) {
+      instr++ ;
+   }
+   wd_current.day = (uint) atoi(instr);
+   instr = next_field(instr);
+   wd_current.month = (uint) atoi(instr);
+   instr = next_field(instr);
+   wd_current.year = (uint) atoi(instr);
+   instr = next_field(instr);
+   wd_current.hour = (uint) atoi(instr);
+   instr = next_field(instr);
+   wd_current.minute = (uint) atoi(instr);
+   
+   //  now, collect data
+   instr = next_field(instr);
+   wd_current.temp = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.humidity = (uint) atoi(instr);
+   instr = next_field(instr);
+   wd_current.dewpoint = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.barometer = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.windspeed = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.gustspeed = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.direction = (uint) atoi(instr);
+   instr = next_field(instr);
+   wd_current.rainlastmin = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.dailyrain = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.monthlyrain = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.yearlyrain = (double) strtod(instr, NULL);
+   instr = next_field(instr);
+   wd_current.heatindex = (double) strtod(instr, NULL);
+   
+   return 0;
 }
 
 //**********************************************************************************
-static int wd_parse_data_row(char *instr)
+//  check max/min values against static wd_current
+//  for first pass, just collect/display *all* of these values...
+// typedef enum {
+// WD_UNKNOWN=0,
+// WD_MAX_TEMP,
+// WD_MIN_TEMP,
+// WD_MAX_WIND,
+// WD_MAX_GUST,
+// WD_MAX_RAIN_DAILY
+// } data_req_t ;
+//**********************************************************************************
+static wd_data_t wd_max_temp ;
+static wd_data_t wd_min_temp ;
+static wd_data_t wd_max_wind ;
+static wd_data_t wd_max_gust ;
+static wd_data_t wd_max_rain_daily ;
+
+static void wd_check_records(void)
 {
-   wd_data_p wdtemp = new wd_data_t ;
-   ZeroMemory(wdtemp, sizeof(wd_data_t));
    
-   instr = next_field(instr);
-   wdtemp->day = (uint) atoi(instr);
-   instr = next_field(instr);
-   wdtemp->month = (uint) atoi(instr);
-   instr = next_field(instr);
-   wdtemp->year = (uint) atoi(instr);
-   instr = next_field(instr);
-   wdtemp->hour = (uint) atoi(instr);
-   instr = next_field(instr);
-   wdtemp->minute = (uint) atoi(instr);
-   
-   return 0;
+}
+
+//**********************************************************************************
+void wd_init_summary_data(void)
+{
+   ZeroMemory((char *) &wd_totals, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_max_temp, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_min_temp, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_max_wind, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_max_gust, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_max_rain_daily, sizeof(wd_data_t));
 }
 
 //**********************************************************************************
@@ -175,19 +233,21 @@ int process_wd_log_file(ffdata const * const ftemp)
 {
    uint lcount ;
    // 10,2021 102021lg.txt
-   // printf("%2u,%4u %s\n", ftemp->month, ftemp->year, ftemp->filename);
+   // printf("fname: %s\n", ftemp->filename);
    sprintf(fpath, "%s\\%s", base_path, ftemp->filename) ;
    FILE *fptr = fopen(fpath, "rt");
    if (fptr == NULL) {
-      // printf("%3u: %2u,%4u %s\n", errno, ftemp->month, ftemp->year, ftemp->filename);
+      printf("%3u: %s\n", (uint) errno, fpath);
       return errno;
    }
    //  read first line, which contains labels
-   int inlen = (int) fread(inpstr, 1, sizeof(inpstr), fptr);
+   // int inlen = (int) fread(inpstr, 1, sizeof(inpstr), fptr);
+   int inlen = (int) fgets(inpstr, sizeof(inpstr), fptr);
    if (inlen == 0) {
       printf("%3u: %2u,%4u %s\n", errno, ftemp->month, ftemp->year, ftemp->filename);  //lint !e705
       return errno ;
    }
+   strip_newlines(inpstr);
    uint valid = wd_parse_label_line(inpstr);
    if (valid != 0) {
       printf("nope [%u]: %2u,%4u %s\n", valid, ftemp->month, ftemp->year, ftemp->filename);
@@ -195,15 +255,38 @@ int process_wd_log_file(ffdata const * const ftemp)
    }
    //  now, scan through all the rest of the lines, and collect data
    lcount = 0 ;
-   while(fread(inpstr, 1, sizeof(inpstr), fptr) != 0) {
+   while(fgets(inpstr, sizeof(inpstr), fptr) != 0) {
+      strip_newlines(inpstr);
       lcount++ ;
+      // if (lcount == 1) {
+      //    printf("[%s]\n", inpstr);
+      // }
+      // int result = wd_parse_data_row(inpstr, lcount, ftemp->filename);
       int result = wd_parse_data_row(inpstr);
       if (result != 0) {
          printf("parse error [L %u]: %s\n", lcount, ftemp->filename);
          goto exit_point ;
       }
+      //  Early runs had a problem with this test, 
+      //  because I used a line number that was larger than certain files!!
+      //  One example: 22017lg.txt had 6850 lines
+      // 01/07/2023, 16:42  100 72023lg.txt
+      if (lcount == 1000) {
+         printf("%02u/%02u/%04u, %02u:%02u  %3.0f %s\n",
+            wd_current.day    ,
+            wd_current.month  ,
+            wd_current.year   ,
+            wd_current.hour   ,
+            wd_current.minute ,
+            wd_current.temp,
+            ftemp->filename);
+      }
+      
+      //  next, check max/min values against static wd_current
+      wd_check_records();
+   
    }
-   printf("okay: lines: %5u, %s\n", lcount, ftemp->filename);
+   // printf("okay: lines: %5u, %s\n", lcount, ftemp->filename);
    
 exit_point:   
    fclose(fptr);

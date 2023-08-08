@@ -267,9 +267,11 @@ int main(int argc, char **argv)
    
    printf("filespec: %s, %u found\n", file_spec, filecount);
    if (filecount > 0) {
-      puts("");
       for (ffdata *ftemp = ftop; ftemp != NULL; ftemp = ftemp->next) {
-         process_wd_log_file(ftemp) ;  //lint !e534
+         result = process_wd_log_file(ftemp) ;  //lint !e534
+         if (result != 0) {
+            printf("error: %s\n", ftemp->filename);
+         }
       }
    }
    return 0;

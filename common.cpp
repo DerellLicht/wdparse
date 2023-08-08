@@ -34,6 +34,28 @@ bool IsCharNum(char inchr)
 }
 
 //**********************************************************************
+//lint -esym(714, strip_newlines)
+//lint -esym(759, strip_newlines)
+//lint -esym(765, strip_newlines)
+void strip_newlines(char *rstr)
+{
+   int slen = (int) strlen(rstr) ;
+   while (1) {
+      if (slen == 0)
+         break;
+      if (*(rstr+slen-1) == '\n'  ||  *(rstr+slen-1) == '\r') {
+         slen-- ;
+         *(rstr+slen) = 0 ;
+      } else {
+         break;
+      }
+   }
+}
+
+//**********************************************************************
+//  NOTE: if string does *not* begin with a space or tab,
+//        this function fails to return proper data!!
+//**********************************************************************
 //lint -esym(714, next_field)
 //lint -esym(759, next_field)
 //lint -esym(765, next_field)

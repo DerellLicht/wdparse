@@ -66,5 +66,6 @@ int hex_dump(u8 *bfr, int bytes);
 char *convert_to_commas(ULONGLONG uli, char *outstr);
 
 bool IsCharNum(char inchr);
+void strip_newlines(char *rstr);
 char *next_field(char *q);
 
