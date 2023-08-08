@@ -274,6 +274,10 @@ int main(int argc, char **argv)
          }
       }
    }
+   
+   //  show records
+   wd_show_records();
+   
    return 0;
 }  //lint !e715
 

@@ -214,7 +214,47 @@ static wd_data_t wd_max_rain_daily ;
 
 static void wd_check_records(void)
 {
-   
+   if (wd_current.temp > wd_max_temp.temp) {
+      wd_max_temp = wd_current ;
+   }
+   if (wd_current.temp < wd_min_temp.temp) {
+      wd_min_temp = wd_current ;
+   }
+   if (wd_current.windspeed > wd_max_wind.windspeed) {
+      wd_max_wind = wd_current ;
+   }
+   if (wd_current.gustspeed > wd_max_gust.gustspeed) {
+      wd_max_gust = wd_current ;
+   }
+   if (wd_current.dailyrain > wd_max_rain_daily.dailyrain) {
+      wd_max_rain_daily = wd_current ;
+   }
+}
+
+//**********************************************************************************
+void wd_show_records(void)
+{
+   puts("");
+   printf("%02u/%02u/%04u, %02u:%02u  Max Temp:         %5.1f\n",
+            wd_max_temp.month  , wd_max_temp.day    , wd_max_temp.year   ,
+            wd_max_temp.hour   , wd_max_temp.minute ,
+            wd_max_temp.temp);
+   printf("%02u/%02u/%04u, %02u:%02u  Min Temp:         %5.1f\n",
+            wd_min_temp.month  , wd_min_temp.day    , wd_min_temp.year   ,
+            wd_min_temp.hour   , wd_min_temp.minute ,
+            wd_min_temp.temp);
+   printf("%02u/%02u/%04u, %02u:%02u  Max Wind Average: %5.1f\n",
+            wd_max_wind.month  , wd_max_wind.day    , wd_max_wind.year   ,
+            wd_max_wind.hour   , wd_max_wind.minute ,
+            wd_max_wind.windspeed);
+   printf("%02u/%02u/%04u, %02u:%02u  Max Wind Gust:    %5.1f\n",
+            wd_max_gust.month  , wd_max_gust.day    , wd_max_gust.year   ,
+            wd_max_gust.hour   , wd_max_gust.minute ,
+            wd_max_gust.gustspeed);
+   printf("%02u/%02u/%04u, %02u:%02u  Max Daily Rain:   %6.2f\n",
+            wd_max_rain_daily.month  , wd_max_rain_daily.day    , wd_max_rain_daily.year   ,
+            wd_max_rain_daily.hour   , wd_max_rain_daily.minute ,
+            wd_max_rain_daily.dailyrain);
 }
 
 //**********************************************************************************
@@ -223,15 +263,30 @@ void wd_init_summary_data(void)
    ZeroMemory((char *) &wd_totals, sizeof(wd_data_t));
    ZeroMemory((char *) &wd_max_temp, sizeof(wd_data_t));
    ZeroMemory((char *) &wd_min_temp, sizeof(wd_data_t));
+   wd_min_temp.temp = 1000.0 ;
    ZeroMemory((char *) &wd_max_wind, sizeof(wd_data_t));
    ZeroMemory((char *) &wd_max_gust, sizeof(wd_data_t));
    ZeroMemory((char *) &wd_max_rain_daily, sizeof(wd_data_t));
 }
 
 //**********************************************************************************
+static char const spin_chars[] = { '\\', '|', '/', '-', 0 };
+
+static void status_spinner_update(void)
+{
+   static uint spin_idx = 0 ;
+   printf("\r[%c]", spin_chars[spin_idx]);
+   spin_idx++ ;
+   if (spin_chars[spin_idx] == 0) {
+      spin_idx = 0 ;
+   }
+}
+
+//**********************************************************************************
 int process_wd_log_file(ffdata const * const ftemp)
 {
    uint lcount ;
+   status_spinner_update();
    // 10,2021 102021lg.txt
    // printf("fname: %s\n", ftemp->filename);
    sprintf(fpath, "%s\\%s", base_path, ftemp->filename) ;
@@ -271,16 +326,15 @@ int process_wd_log_file(ffdata const * const ftemp)
       //  because I used a line number that was larger than certain files!!
       //  One example: 22017lg.txt had 6850 lines
       // 01/07/2023, 16:42  100 72023lg.txt
-      if (lcount == 1000) {
-         printf("%02u/%02u/%04u, %02u:%02u  %3.0f %s\n",
-            wd_current.day    ,
-            wd_current.month  ,
-            wd_current.year   ,
-            wd_current.hour   ,
-            wd_current.minute ,
-            wd_current.temp,
-            ftemp->filename);
-      }
+      // if (lcount == 1013) {
+      //    printf("%02u/%02u/%04u, %02u:%02u  %5.1f %5.1f %5.1f %s\n",
+      //       wd_current.day    , wd_current.month  , wd_current.year   ,
+      //       wd_current.hour   , wd_current.minute ,
+      //       wd_current.temp,    
+      //       wd_current.windspeed,    
+      //       wd_current.gustspeed,    
+      //       ftemp->filename);
+      // }
       
       //  next, check max/min values against static wd_current
       wd_check_records();
