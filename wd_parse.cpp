@@ -243,6 +243,7 @@ void wd_show_records(void)
             wd_max_rain_daily.month  , wd_max_rain_daily.day    , wd_max_rain_daily.year   ,
             wd_max_rain_daily.hour   , wd_max_rain_daily.minute ,
             wd_max_rain_daily.dailyrain);
+   puts("");
 }
 
 //**********************************************************************************
