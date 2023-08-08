@@ -130,10 +130,6 @@ typedef struct wd_data_s {
    wd_data_s *next ;
 } wd_data_t, *wd_data_p ;
 
-//  no, we don't need a list of lines in all the files...
-//  we just want to collect summary data
-// static wd_data_p wdtop = NULL ;
-// static wd_data_p wdtail = NULL ;
 static wd_data_t wd_totals ;
 
 //**********************************************************************************
@@ -195,17 +191,6 @@ static int wd_parse_data_row(char *instr)
 }
 
 //**********************************************************************************
-//  check max/min values against static wd_current
-//  for first pass, just collect/display *all* of these values...
-// typedef enum {
-// WD_UNKNOWN=0,
-// WD_MAX_TEMP,
-// WD_MIN_TEMP,
-// WD_MAX_WIND,
-// WD_MAX_GUST,
-// WD_MAX_RAIN_DAILY
-// } data_req_t ;
-//**********************************************************************************
 static wd_data_t wd_max_temp ;
 static wd_data_t wd_min_temp ;
 static wd_data_t wd_max_wind ;
@@ -217,7 +202,10 @@ static void wd_check_records(void)
    if (wd_current.temp > wd_max_temp.temp) {
       wd_max_temp = wd_current ;
    }
-   if (wd_current.temp < wd_min_temp.temp) {
+   //  this min-temp computation wouldn't be sufficient in areas
+   //  which get temps lower than zero.
+   if (wd_current.temp > 1.0  &&
+       wd_current.temp < wd_min_temp.temp) {
       wd_min_temp = wd_current ;
    }
    if (wd_current.windspeed > wd_max_wind.windspeed) {

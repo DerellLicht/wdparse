@@ -30,6 +30,8 @@ bool show_all = true ;
 //lint -esym(818, filespec, argv)  //could be declared as pointing to const
 //lint -e10  Expecting '}'
 
+static uint year_to_select = 0 ;
+
 //************************************************************
 ffdata *ftop  = NULL;
 static ffdata *ftail = NULL;
@@ -163,6 +165,12 @@ int read_files(char *filespec)
             ftemp->year = nlen ;
             break ;
          }
+         
+         if (year_to_select != 0  &&
+             year_to_select != ftemp->year) {
+            delete ftemp ;
+            goto search_next_file;
+         }
 
          //****************************************************
          //  add the structure to the file list
@@ -187,45 +195,49 @@ search_next_file:
 }
 
 //**********************************************************************************
-// typedef enum {
-// WD_UNKNOWN=0,
-// WD_MAX_TEMP,
-// WD_MIN_TEMP,
-// WD_MAX_WIND,
-// WD_MAX_GUST,
-// WD_MAX_RAIN_DAILY
-// } data_req_t ;
-
-// static void usage(void)
-// {
-//    puts("Usage: wdparse [options]");
-//    puts("where [options] is one of:");
-//    puts("-x = show max temperature ");
-//    puts("-n = show min temperature");
-//    puts("-w = show max wind");
-//    puts("-g = max wind gust");
-//    puts("-r = max daily rain");
-// }
+static void usage(void)
+{
+   puts("Usage: wdparse year_to_select");
+   puts("-h = show usage screen");
+   puts("-yYYYY = year to select");
+   puts("If year_to_select is not specified, data from all years will be collected.");
+}
 
 //**********************************************************************************
 char file_spec[PATH_MAX+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
 
-data_req_t data_req = WD_UNKNOWN;
-
 int main(int argc, char **argv)
 {
    int result ;
-   // int idx ;
-   // for (idx=1; idx<argc; idx++) {
-   //    char *p = argv[idx] ;
-   //    switch (*p) {
-   //    case ''
-   //    }
-   //    
-   //    // char *p = argv[idx] ;
-   //    // strncpy(file_spec, p, PATH_MAX);
-   //    // file_spec[PATH_MAX] = 0 ;
-   // }
+   int idx ;
+   for (idx=1; idx<argc; idx++) {
+      char *p = argv[idx] ;
+      if (*p == '-') {
+         p++ ;
+         switch (*p) {
+         case 'y':
+            p++ ;
+            year_to_select = (uint) atoi(p);
+            break ;
+            
+         case 'h':
+         default:
+            usage() ;
+            return 0 ;
+         }
+      }
+      else {
+         usage() ;
+         return 0 ;
+      }
+   }
+   
+   if (year_to_select != 0) {
+      printf("filter on year %u\n", year_to_select);
+   }
+   else {
+      printf("show data for all years\n");
+   }
 
    // if (file_spec[0] == 0) {
    //    strcpy(file_spec, ".");
