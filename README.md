@@ -14,5 +14,7 @@ Usage: wdparse year_to_select
 If year_to_select is not specified, data from all years will be collected.
 ```
 
+Default path is currently hard-coded to c:\WeatherDisplay\logfiles 
+
 Download [executable](http://derelllicht.com/files/wdparse.zip) here
 
