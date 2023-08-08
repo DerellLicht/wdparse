@@ -186,7 +186,7 @@ static int wd_parse_data_row(char *instr)
    //  Weather Display program resets annual rainfall totals
    //  on July 1st, so looking at December data for a year,
    //  may give misleading yearly results.
-   if (wd_current.month == 5  ||  wd_current.month == 6) {
+   if (wd_current.month <= 6) {
       wd_current.yearlyrain = (double) strtod(instr, NULL);
    }
    instr = next_field(instr);
