@@ -13,7 +13,7 @@
 //lint -e40    Undeclared identifier 'LowPart'
 //lint -e63    Expected an lvalue
 
-static struct ffdata *merge(struct ffdata *a, struct ffdata *b);
+static ffdata_t *merge(ffdata_t *a, ffdata_t *b);
 //************************************************************
 //  the following object is a dummy point structure
 //  which is used by merge_sort.  The main code must
@@ -29,17 +29,17 @@ static struct ffdata *merge(struct ffdata *a, struct ffdata *b);
 //     <0 if a < b
 //  
 //************************************************************
-static struct ffdata *z = NULL ;
-static int (*sort_fcn) (struct ffdata *a, struct ffdata *b) ;
+static ffdata_t *z = NULL ;
+static int (*sort_fcn) (ffdata_t *a, ffdata_t *b) ;
 
 //****************************************************
 //  allocate a dummy structure for merge_sort()
 //****************************************************
 static int init_sort(void) 
 {
-   // z = (struct ffdata *) malloc(sizeof(ffdata)) ;
+   // z = (ffdata_t *) malloc(sizeof(ffdata)) ;
    //  new does not return errno on OUT_OF_MEMORY, it just aborts
-   z = (struct ffdata *) new ffdata ;
+   z = (ffdata_t *) new ffdata ;
    // if (z == NULL)
    //    error_exit(OUT_OF_MEMORY, NULL) ;
    z->next = NULL ;
@@ -53,7 +53,7 @@ static int init_sort(void)
 //    }
 
 //*********************************************************
-static int sort_month(struct ffdata *a, struct ffdata *b)
+static int sort_month(ffdata_t *a, ffdata_t *b)
 {
    if (a->month > b->month)  return(1) ;
    else if (b->month > a->month)  return(-1) ;
@@ -61,7 +61,7 @@ static int sort_month(struct ffdata *a, struct ffdata *b)
 }  //lint !e818
 
 //*********************************************************
-static int sort_year(struct ffdata *a, struct ffdata *b)
+static int sort_year(ffdata_t *a, ffdata_t *b)
 {
    if (a->year > b->year)  return(1) ;
    else if (b->year > a->year)  return(-1) ;
@@ -72,9 +72,9 @@ static int sort_year(struct ffdata *a, struct ffdata *b)
 //  This routine recursively splits linked lists into two parts, 
 //  passing the divided lists to merge() to merge the two sorted lists.
 //***************************************************************************
-static struct ffdata *merge_sort(struct ffdata *c)
+static ffdata_t *merge_sort(ffdata_t *c)
    {
-   struct ffdata *a, *b, *prev ;
+   ffdata_t *a, *b, *prev ;
    int pcount = 0 ;
    int j = 0 ;
 
@@ -105,9 +105,9 @@ static struct ffdata *merge_sort(struct ffdata *c)
 //*********************************************************
 //  This routine merges two sorted linked lists.
 //*********************************************************
-static struct ffdata *merge(struct ffdata *a, struct ffdata *b)
+static ffdata_t *merge(ffdata_t *a, ffdata_t *b)
    {
-   struct ffdata *c ;
+   ffdata_t *c ;
    c = z ;
 
    do
@@ -141,7 +141,7 @@ static struct ffdata *merge(struct ffdata *a, struct ffdata *b)
 //  comparison-function pointer and passes the global
 //  list pointer to merge_sort().
 //*********************************************************
-static void sort_files(int (*current_sort)(struct ffdata *a, struct ffdata *b))
+static void sort_files(int (*current_sort)(ffdata_t *a, ffdata_t *b))
 {
    sort_fcn = current_sort ;
    ftop = merge_sort(ftop) ;
@@ -162,5 +162,3 @@ void sort_filelist(void)
 //lint +e1013  Symbol 'LowPart' not a member of class '_LARGE_INTEGER'
 //lint +e40    Undeclared identifier 'LowPart'
 //lint +e63    Expected an lvalue
-
-

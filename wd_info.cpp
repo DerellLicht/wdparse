@@ -33,8 +33,8 @@ bool show_all = true ;
 static uint year_to_select = 0 ;
 
 //************************************************************
-ffdata *ftop  = NULL;
-static ffdata *ftail = NULL;
+ffdata_t *ftop  = NULL;
+static ffdata_t *ftail = NULL;
 
 //**********************************************************************************
 //  filename format is m[m]yyyylg.txt
@@ -104,7 +104,6 @@ int read_files(char *filespec)
       if (fn_okay) {
          // printf("DIRECTORY %04X %s\n", fdata.attrib, fdata.cFileName) ;
          // printf("%9ld %04X %s\n", fdata.file_size, fdata.attrib, fdata.cFileName) ;
-         filecount++;
 
          //****************************************************
          //  allocate and initialize the structure
@@ -175,6 +174,7 @@ int read_files(char *filespec)
          //****************************************************
          //  add the structure to the file list
          //****************************************************
+         filecount++;
          if (ftop == NULL) {
             ftop = ftemp;
          }
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
    printf("filespec: %s, %u found\n", file_spec, filecount);
    if (filecount > 0) {
       for (ffdata *ftemp = ftop; ftemp != NULL; ftemp = ftemp->next) {
-         result = process_wd_log_file(ftemp) ;  //lint !e534
+         result = process_wd_log_file(ftemp->filename) ;  //lint !e534
          if (result != 0) {
             printf("error: %s\n", ftemp->filename);
          }

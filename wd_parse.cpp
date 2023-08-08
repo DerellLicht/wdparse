@@ -135,7 +135,6 @@ static wd_data_t wd_totals ;
 //**********************************************************************************
 static wd_data_t wd_current ; //  export to caller
 
-// static int wd_parse_data_row(char *instr, uint lcount, char *fname)
 static int wd_parse_data_row(char *instr)
 {
    // wd_data_p wdtemp = new wd_data_t ;
@@ -291,29 +290,27 @@ static void status_spinner_update(void)
 }
 
 //**********************************************************************************
-int process_wd_log_file(ffdata const * const ftemp)
+int process_wd_log_file(char *filename)
 {
    uint lcount ;
    status_spinner_update();
    // 10,2021 102021lg.txt
-   // printf("fname: %s\n", ftemp->filename);
-   sprintf(fpath, "%s\\%s", base_path, ftemp->filename) ;
+   sprintf(fpath, "%s\\%s", base_path, filename) ;
    FILE *fptr = fopen(fpath, "rt");
    if (fptr == NULL) {
       printf("%3u: %s\n", (uint) errno, fpath);
       return errno;
    }
    //  read first line, which contains labels
-   // int inlen = (int) fread(inpstr, 1, sizeof(inpstr), fptr);
    int inlen = (int) fgets(inpstr, sizeof(inpstr), fptr);
    if (inlen == 0) {
-      printf("%3u: %2u,%4u %s\n", errno, ftemp->month, ftemp->year, ftemp->filename);  //lint !e705
+      printf("%3u: %s\n", errno, filename);  //lint !e705
       return errno ;
    }
    strip_newlines(inpstr);
    uint valid = wd_parse_label_line(inpstr);
    if (valid != 0) {
-      printf("nope [%u]: %2u,%4u %s\n", valid, ftemp->month, ftemp->year, ftemp->filename);
+      printf("line parse error [%u]: %s\n", valid, filename);
       goto exit_point ;
    }
    //  now, scan through all the rest of the lines, and collect data
@@ -321,34 +318,15 @@ int process_wd_log_file(ffdata const * const ftemp)
    while(fgets(inpstr, sizeof(inpstr), fptr) != 0) {
       strip_newlines(inpstr);
       lcount++ ;
-      // if (lcount == 1) {
-      //    printf("[%s]\n", inpstr);
-      // }
-      // int result = wd_parse_data_row(inpstr, lcount, ftemp->filename);
       int result = wd_parse_data_row(inpstr);
       if (result != 0) {
-         printf("parse error [L %u]: %s\n", lcount, ftemp->filename);
+         printf("parse error [L %u]: %s\n", lcount, filename);
          goto exit_point ;
       }
-      //  Early runs had a problem with this test, 
-      //  because I used a line number that was larger than certain files!!
-      //  One example: 22017lg.txt had 6850 lines
-      // 01/07/2023, 16:42  100 72023lg.txt
-      // if (lcount == 1013) {
-      //    printf("%02u/%02u/%04u, %02u:%02u  %5.1f %5.1f %5.1f %s\n",
-      //       wd_current.day    , wd_current.month  , wd_current.year   ,
-      //       wd_current.hour   , wd_current.minute ,
-      //       wd_current.temp,    
-      //       wd_current.windspeed,    
-      //       wd_current.gustspeed,    
-      //       ftemp->filename);
-      // }
       
       //  next, check max/min values against static wd_current
       wd_check_records();
-   
    }
-   // printf("okay: lines: %5u, %s\n", lcount, ftemp->filename);
    
 exit_point:   
    fclose(fptr);

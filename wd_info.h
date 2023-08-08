@@ -6,7 +6,7 @@
 //  
 //************************************************************
 
-struct ffdata {
+typedef struct ffdata {
    uchar          attrib ;
    FILETIME       ft ;
    ULONGLONG      fsize ;
@@ -15,12 +15,13 @@ struct ffdata {
    uint           month ;  //  extracted from filename
    uint           year ;   //  extracted from filename
    struct ffdata  *next ;
-} ;
-extern ffdata *ftop  ;
+} ffdata_t ;
+
+extern ffdata_t *ftop  ;
 
 //  wd_parse.cpp
 void wd_init_summary_data(void);
-int process_wd_log_file(ffdata const * const ftemp);
+int process_wd_log_file(char *filename);
 void wd_show_records(void);
 
 //  nsort.cpp
