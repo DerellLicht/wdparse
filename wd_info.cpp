@@ -277,6 +277,20 @@ int main(int argc, char **argv)
    //  sort file list by month/year
    sort_filelist();
    
+   //**********************************************************************************
+   //  NOTE: execution time for this operation is fairly time-consuming.
+   //  My Weather Display logfiles (m[m]yyyylg.txt) comprise the following statistics:
+   //  > 125 files
+   //  > 425 MBytes
+   //  > 5,220,424 lines
+   //  
+   //  Parsing all this requires over 11 seconds on my 2022 gaming machine.
+   //  It could possibly be sped up by reading each file into memory once,
+   //  then reading lines out of memory, rather than using an fgets() loop
+   //  as I currently do.  However, most of those log files are around 3.5MB each,
+   //  so I don't think I could handle this in one read; at least in Windows 7 32-bit,
+   //  There was a limit of 1MB per allocation.
+   //**********************************************************************************
    printf("filespec: %s, %u found\n", file_spec, filecount);
    if (filecount > 0) {
       for (ffdata *ftemp = ftop; ftemp != NULL; ftemp = ftemp->next) {
