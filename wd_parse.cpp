@@ -183,7 +183,13 @@ static int wd_parse_data_row(char *instr)
    instr = next_field(instr);
    wd_current.monthlyrain = (double) strtod(instr, NULL);
    instr = next_field(instr);
-   wd_current.yearlyrain = (double) strtod(instr, NULL);
+   //  this selective filter will help us choose accurate data...
+   //  Weather Display program resets annual rainfall totals
+   //  on July 1st, so looking at December data for a year,
+   //  may give misleading yearly results.
+   if (wd_current.month == 5  ||  wd_current.month == 6) {
+      wd_current.yearlyrain = (double) strtod(instr, NULL);
+   }
    instr = next_field(instr);
    wd_current.heatindex = (double) strtod(instr, NULL);
    
@@ -196,6 +202,7 @@ static wd_data_t wd_min_temp ;
 static wd_data_t wd_max_wind ;
 static wd_data_t wd_max_gust ;
 static wd_data_t wd_max_rain_daily ;
+static wd_data_t wd_max_rain_yearly ;
 
 static void wd_check_records(void)
 {
@@ -216,6 +223,14 @@ static void wd_check_records(void)
    }
    if (wd_current.dailyrain > wd_max_rain_daily.dailyrain) {
       wd_max_rain_daily = wd_current ;
+   }
+   //  This doesn't always give desirable results;
+   //  Since rainfall totals reset on July 1st,
+   //  if we got more rain in second half of year, than in first half,
+   //  this gives misleading data...
+   //  We need a way to monitor these values only in May/June
+   if (wd_current.yearlyrain > wd_max_rain_yearly.yearlyrain) {
+      wd_max_rain_yearly = wd_current ;
    }
 }
 
@@ -243,6 +258,10 @@ void wd_show_records(void)
             wd_max_rain_daily.month  , wd_max_rain_daily.day    , wd_max_rain_daily.year   ,
             wd_max_rain_daily.hour   , wd_max_rain_daily.minute ,
             wd_max_rain_daily.dailyrain);
+   printf("%02u/%02u/%04u, %02u:%02u  Yearly Rain:      %6.2f\n",
+            wd_max_rain_yearly.month  , wd_max_rain_yearly.day    , wd_max_rain_yearly.year   ,
+            wd_max_rain_yearly.hour   , wd_max_rain_yearly.minute ,
+            wd_max_rain_yearly.yearlyrain);
    puts("");
 }
 
