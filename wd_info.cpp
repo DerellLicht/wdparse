@@ -8,7 +8,6 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>  //  PATH_MAX
-#include <ctype.h>   //  isdigit()
 
 #include "common.h"
 #include "wd_info.h"
@@ -42,7 +41,7 @@ static uint extract_month_and_year(char const *fname, char *mystr)
 {
    uint len = 0 ;
    while (LOOP_FOREVER) {
-      if (!isdigit(*fname)) {
+      if (!IsCharNum(*fname)) {
          break ;
       }
       mystr[len] = *fname ;
@@ -188,20 +187,49 @@ search_next_file:
 }
 
 //**********************************************************************************
+// typedef enum {
+// WD_UNKNOWN=0,
+// WD_MAX_TEMP,
+// WD_MIN_TEMP,
+// WD_MAX_WIND,
+// WD_MAX_GUST,
+// WD_MAX_RAIN_DAILY
+// } data_req_t ;
+
+// static void usage(void)
+// {
+//    puts("Usage: wdparse [options]");
+//    puts("where [options] is one of:");
+//    puts("-x = show max temperature ");
+//    puts("-n = show min temperature");
+//    puts("-w = show max wind");
+//    puts("-g = max wind gust");
+//    puts("-r = max daily rain");
+// }
+
+//**********************************************************************************
 char file_spec[PATH_MAX+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
+
+data_req_t data_req = WD_UNKNOWN;
 
 int main(int argc, char **argv)
 {
-   int idx, result ;
-   for (idx=1; idx<argc; idx++) {
-      char *p = argv[idx] ;
-      strncpy(file_spec, p, PATH_MAX);
-      file_spec[PATH_MAX] = 0 ;
-   }
+   int result ;
+   // int idx ;
+   // for (idx=1; idx<argc; idx++) {
+   //    char *p = argv[idx] ;
+   //    switch (*p) {
+   //    case ''
+   //    }
+   //    
+   //    // char *p = argv[idx] ;
+   //    // strncpy(file_spec, p, PATH_MAX);
+   //    // file_spec[PATH_MAX] = 0 ;
+   // }
 
-   if (file_spec[0] == 0) {
-      strcpy(file_spec, ".");
-   }
+   // if (file_spec[0] == 0) {
+   //    strcpy(file_spec, ".");
+   // }
 
    uint qresult = qualify(file_spec) ;
    if (qresult == QUAL_INV_DRIVE) {
@@ -243,5 +271,5 @@ int main(int argc, char **argv)
       }
    }
    return 0;
-}
+}  //lint !e715
 

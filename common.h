@@ -16,6 +16,18 @@ typedef  unsigned char        u8  ;
 typedef  unsigned short       u16 ;
 typedef  unsigned int         u32 ;
 
+//lint -esym(755, ZERO, ETX, LF, BSP, CR, CtrlC, SPC, STX)
+
+#define  STX      2
+#define  ETX      3
+#define  CtrlC    3
+#define  BSP      8
+#define  HTAB     9
+#define  CR       13
+#define  LF       10
+#define  SPC      32
+#define  ZERO     48
+
 //  this definition was excluded by WINNT.H
 #define FILE_ATTRIBUTE_VOLID  0x00000008
 
@@ -52,4 +64,7 @@ int hex_dump(u8 *bfr, int bytes);
 // ULLONG_MAX = 18,446,744,073,709,551,615
 #define  MAX_ULL_COMMA_LEN  26
 char *convert_to_commas(ULONGLONG uli, char *outstr);
+
+bool IsCharNum(char inchr);
+char *next_field(char *q);
 

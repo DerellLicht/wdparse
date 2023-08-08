@@ -22,6 +22,31 @@ char base_path[PATH_MAX] ;
 unsigned base_len ;  //  length of base_path
 
 //**********************************************************************
+//lint -esym(714, IsCharNum)
+//lint -esym(759, IsCharNum)
+//lint -esym(765, IsCharNum)
+bool IsCharNum(char inchr)
+{
+   // if (inchr >= '0'  &&  inchr <= '9')
+   if (inchr >= '0'  &&  inchr <= '9')
+      return true ;
+   return false;
+}
+
+//**********************************************************************
+//lint -esym(714, next_field)
+//lint -esym(759, next_field)
+//lint -esym(765, next_field)
+char *next_field(char *q)
+{
+   while (*q != ' '  &&  *q != HTAB  &&  *q != 0)
+      q++ ; //  walk past non-spaces
+   while (*q == ' '  ||  *q == HTAB)
+      q++ ; //  walk past all spaces
+   return q;
+}
+
+//**********************************************************************
 //  Modify this to build entire string and print once.
 //  This command has several forms:
 //
