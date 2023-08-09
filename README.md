@@ -29,6 +29,8 @@ filespec: C:\WeatherDisplay\logfiles\*lg.txt, 125 found
 03/14/2023, 13:01  Max Wind Gust:     42.0
 12/31/2022, 23:34  Max Daily Rain:     3.90
 ```
+See wdparse.out in this repository, for an example of breaking out
+results by year.
 
 Download [executable](http://derelllicht.com/files/wdparse.zip) here
 
