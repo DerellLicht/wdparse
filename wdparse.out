@@ -1,0 +1,120 @@
+D:\SourceCode\Git\wdparse Yes, Master?? > for /l %v in (2012,1,2023) do wdparse -y%v
+filter on year 2012
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 3 found
+[/]
+10/18/2012, 15:21  Max Temp:          91.7
+12/19/2012, 05:37  Min Temp:          30.5
+12/21/2012, 16:10  Max Wind Average:  15.4
+11/30/2012, 01:56  Max Wind Gust:     30.0
+11/30/2012, 19:08  Max Daily Rain:     2.19
+00/00/0000, 00:00  Yearly Rain:        0.00
+
+filter on year 2013
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+06/29/2013, 14:17  Max Temp:          99.2
+01/15/2013, 06:58  Min Temp:          28.7
+03/05/2013, 21:35  Max Wind Average:  17.3
+03/05/2013, 20:05  Max Wind Gust:     29.0
+09/21/2013, 15:14  Max Daily Rain:     0.65
+06/25/2013, 01:00  Yearly Rain:       12.29
+
+filter on year 2014
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+07/25/2014, 15:15  Max Temp:          99.4
+12/27/2014, 07:08  Min Temp:          32.7
+12/11/2014, 07:43  Max Wind Average:  19.1
+12/11/2014, 07:42  Max Wind Gust:     33.0
+12/11/2014, 23:55  Max Daily Rain:     3.45
+06/01/2014, 08:15  Yearly Rain:        7.78
+
+filter on year 2015
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+08/16/2015, 15:56  Max Temp:         102.2
+12/27/2015, 07:27  Min Temp:          28.5
+02/06/2015, 21:56  Max Wind Average:  15.9
+02/06/2015, 21:45  Max Wind Gust:     29.0
+12/21/2015, 23:57  Max Daily Rain:     1.05
+06/10/2015, 14:59  Yearly Rain:       22.93
+
+filter on year 2016
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 7 found
+[/]
+06/03/2016, 14:47  Max Temp:         100.1
+07/10/2016, 18:28  Min Temp:          32.0
+01/06/2016, 05:54  Max Wind Average:  16.7
+03/05/2016, 16:52  Max Wind Gust:     29.0
+03/05/2016, 23:56  Max Daily Rain:     0.74
+05/21/2016, 10:55  Yearly Rain:       14.29
+
+filter on year 2017
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 11 found
+[/]
+09/02/2017, 15:24  Max Temp:         110.6
+06/27/2017, 14:45  Min Temp:          32.0
+04/06/2017, 21:03  Max Wind Average:  19.3
+04/06/2017, 20:22  Max Wind Gust:     34.0
+11/16/2017, 17:13  Max Daily Rain:     1.39
+04/26/2017, 14:12  Yearly Rain:       23.26
+
+filter on year 2018
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+06/23/2018, 16:40  Max Temp:         100.1
+03/29/2018, 17:27  Min Temp:          32.0
+12/31/2018, 11:56  Max Wind Average:  17.6
+11/28/2018, 22:07  Max Wind Gust:     30.0
+01/08/2018, 23:54  Max Daily Rain:     1.73
+04/28/2018, 19:45  Yearly Rain:       11.84
+
+filter on year 2019
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+06/10/2019, 15:54  Max Temp:         105.0
+01/02/2019, 03:01  Min Temp:          32.1
+02/01/2019, 22:29  Max Wind Average:  17.2
+01/06/2019, 16:15  Max Wind Gust:     35.0
+01/06/2019, 21:21  Max Daily Rain:     1.06
+05/30/2019, 14:38  Yearly Rain:       18.56
+
+filter on year 2020
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+09/07/2020, 14:38  Max Temp:         106.6
+02/03/2020, 04:16  Min Temp:          32.1
+02/09/2020, 09:20  Max Wind Average:  19.3
+02/09/2020, 09:37  Max Wind Gust:     34.0
+03/14/2020, 23:56  Max Daily Rain:     0.91
+05/19/2020, 07:03  Yearly Rain:        8.93
+
+filter on year 2021
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+06/17/2021, 14:20  Max Temp:         101.1
+01/21/2021, 07:38  Min Temp:          32.1
+01/19/2021, 06:45  Max Wind Average:  19.8
+01/19/2021, 05:21  Max Wind Gust:     33.0
+10/24/2021, 23:58  Max Daily Rain:     2.93
+04/26/2021, 17:59  Yearly Rain:        6.90
+
+filter on year 2022
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 12 found
+[-]
+09/06/2022, 15:05  Max Temp:         109.6
+11/30/2022, 07:22  Min Temp:          30.9
+03/04/2022, 17:07  Max Wind Average:  17.3
+03/04/2022, 18:12  Max Wind Gust:     32.0
+12/31/2022, 23:34  Max Daily Rain:     3.90
+05/10/2022, 09:42  Yearly Rain:       13.17
+
+filter on year 2023
+filespec: C:\WeatherDisplay\logfiles\*lg.txt, 8 found
+[-]
+07/01/2023, 16:42  Max Temp:         100.3
+01/21/2023, 05:14  Min Temp:          30.0
+02/21/2023, 15:39  Max Wind Average:  18.9
+03/14/2023, 13:01  Max Wind Gust:     42.0
+02/24/2023, 15:05  Max Daily Rain:     1.32
+06/06/2023, 10:49  Yearly Rain:       31.80

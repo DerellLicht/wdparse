@@ -5,7 +5,8 @@ You can use them for any purpose, personal or commercial, in whole or in part,
 for any purpose that you wish, without contacting me further.
 
 This console utility reads the log files from the Weather Display program,
-and displays summary data for the data.
+and displays summaries for the data.  User can either get one summary for
+all existing data, or get separate summaries for each year of log files.
 
 ```
 Usage: wdparse year_to_select
