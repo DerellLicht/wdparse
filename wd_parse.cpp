@@ -146,7 +146,7 @@ static int wd_parse_data_row(char *instr)
    //  pull time/data
    //  for first field, do *not* depend on next_field to work properly...
    //  If no space/tab is present, this fails
-   // instr = next_field(instr);
+   // instr = next_field(instr); //  for some reason, this isn't working: no leading space
    if (*instr == SPC) {
       instr++ ;
    }
