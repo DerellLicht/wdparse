@@ -33,5 +33,6 @@ filespec: C:\WeatherDisplay\logfiles\*lg.txt, 125 found
 See wdparse.out in this repository, for an example of breaking out
 results by year.
 
+View [summaries by year](http://derelllicht.com/files/wdparse.out) here  
 Download [executable](http://derelllicht.com/files/wdparse.zip) here
 
