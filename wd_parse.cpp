@@ -269,6 +269,7 @@ void wd_init_summary_data(void)
    ZeroMemory((char *) &wd_max_wind, sizeof(wd_data_t));
    ZeroMemory((char *) &wd_max_gust, sizeof(wd_data_t));
    ZeroMemory((char *) &wd_max_rain_daily, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_max_rain_yearly, sizeof(wd_data_t));
 }
 
 //**********************************************************************************
