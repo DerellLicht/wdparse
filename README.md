@@ -28,6 +28,7 @@ filespec: C:\WeatherDisplay\logfiles\*lg.txt, 125 found
 01/19/2021, 06:45  Max Wind Average:  19.8
 03/14/2023, 13:01  Max Wind Gust:     42.0
 12/31/2022, 23:34  Max Daily Rain:     3.90
+06/06/2023, 10:49  Yearly Rain:       31.80
 ```
 See wdparse.out in this repository, for an example of breaking out
 results by year.
