@@ -31,6 +31,7 @@ bool show_all = true ;
 //lint -e10  Expecting '}'
 
 static uint year_to_select = 0 ;
+static uint month_to_select = 0 ;
 
 //************************************************************
 ffdata_t *ftop  = NULL;
@@ -171,6 +172,12 @@ int read_files(char *filespec)
             goto search_next_file;
          }
 
+         if (month_to_select != 0  &&
+             month_to_select != ftemp->month) {
+            delete ftemp ;
+            goto search_next_file;
+         }
+
          //****************************************************
          //  add the structure to the file list
          //****************************************************
@@ -197,10 +204,16 @@ search_next_file:
 //**********************************************************************************
 static void usage(void)
 {
-   puts("Usage: wdparse year_to_select");
+   puts("Usage: wdparse [filter_by_year] [filter_by_month] ");
    puts("-h = show usage screen");
-   puts("-yYYYY = year to select");
-   puts("If year_to_select is not specified, data from all years will be collected.");
+   puts("-yYYYY = show max/min stats for given year");
+   puts("-mMM = Show max/min stats for given month over all years");
+   puts("");
+   puts("Note that year and month filters are mutually exclusive;");
+   puts("If both options are specified, program with abort with usage message");
+   puts("");
+   puts("If neither year nor month are specified,");
+   puts("data from all years will be collected.");
 }
 
 //**********************************************************************************
@@ -220,20 +233,32 @@ int main(int argc, char **argv)
             year_to_select = (uint) atoi(p);
             break ;
             
+         case 'm':
+            p++ ;
+            month_to_select = (uint) atoi(p);
+            break ;
+            
          case 'h':
          default:
             usage() ;
-            return 0 ;
+            return 1 ;
          }
       }
       else {
          usage() ;
-         return 0 ;
+         return 1 ;
       }
    }
    
+   if (year_to_select != 0  &&  month_to_select != 0) {
+      usage() ;
+      return 1 ;
+   }
    if (year_to_select != 0) {
       printf("filter on year %u\n", year_to_select);
+   }
+   else if (month_to_select != 0) {
+      printf("filter on month %u\n", month_to_select);
    }
    else {
       printf("show data for all years\n");
@@ -299,10 +324,10 @@ int main(int argc, char **argv)
             printf("error: %s\n", ftemp->filename);
          }
       }
-   }
    
-   //  show records
-   wd_show_records();
+      //  show records
+      wd_show_records();
+   }
    
    return 0;
 }  //lint !e715

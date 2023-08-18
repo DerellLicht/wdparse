@@ -9,10 +9,16 @@ and displays summaries for the data.  User can either get one summary for
 all existing data, or get separate summaries for each year of log files.
 
 ```
-Usage: wdparse year_to_select
+Usage: wdparse [filter_by_year] [filter_by_month]
 -h = show usage screen
--yYYYY = year to select; display data only for selected year
-If year_to_select is not specified, data from all years will be collected.
+-yYYYY = show max/min stats for given year
+-mMM = Show max/min stats for given month over all years
+
+Note that year and month filters are mutually exclusive;
+If both options are specified, program with abort with usage message
+
+If neither year nor month are specified,
+data from all years will be collected.
 ```
 
 Default path is currently hard-coded to c:\WeatherDisplay\logfiles 
