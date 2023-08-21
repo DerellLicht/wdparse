@@ -166,6 +166,7 @@ int read_files(char *filespec)
             break ;
          }
          
+         //  filter on command-line args
          if (year_to_select != 0  &&
              year_to_select != ftemp->year) {
             delete ftemp ;
