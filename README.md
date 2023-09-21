@@ -14,8 +14,8 @@ Usage: wdparse [filter_by_year] [filter_by_month]
 -yYYYY = show max/min stats for given year
 -mMM = Show max/min stats for given month over all years
 
-Note that year and month filters are mutually exclusive;
-If both options are specified, program with abort with usage message
+Month and Year values may be combined; thus:
+-m8 -y2023 will show stats for August 2023.
 
 If neither year nor month are specified,
 data from all years will be collected.
