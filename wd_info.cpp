@@ -166,19 +166,39 @@ int read_files(char *filespec)
             break ;
          }
          
-         //  filter on command-line args
-         if (year_to_select != 0  &&
-             year_to_select != ftemp->year) {
-            delete ftemp ;
-            goto search_next_file;
-         }
+         uint select_mode = 0 ;
+         if (year_to_select  != 0)  select_mode |= 1 ;
+         if (month_to_select != 0)  select_mode |= 2 ;
+         
+         switch (select_mode) {
+         case 3:  //  month and year selected
+            if (year_to_select  != ftemp->year  || 
+                month_to_select != ftemp->month) {
+               delete ftemp ;
+               goto search_next_file;
+            }
+            break ;
+            
+         case 2:  //  month selected
+            if (month_to_select != ftemp->month) {
+               delete ftemp ;
+               goto search_next_file;
+            }
 
-         if (month_to_select != 0  &&
-             month_to_select != ftemp->month) {
-            delete ftemp ;
-            goto search_next_file;
+            break ;
+         
+         case 1:  //  year selected
+            if (year_to_select != ftemp->year) {
+               delete ftemp ;
+               goto search_next_file;
+            }
+            break ;
+         
+         case 0:
+         default:
+            break ;
          }
-
+         
          //****************************************************
          //  add the structure to the file list
          //****************************************************
@@ -210,8 +230,8 @@ static void usage(void)
    puts("-yYYYY = show max/min stats for given year");
    puts("-mMM = Show max/min stats for given month over all years");
    puts("");
-   puts("Note that year and month filters are mutually exclusive;");
-   puts("If both options are specified, program with abort with usage message");
+   puts("Month and Year values may be combined; thus:");
+   puts("-m8 -y2023 will show stats for August 2023.");
    puts("");
    puts("If neither year nor month are specified,");
    puts("data from all years will be collected.");
@@ -250,12 +270,13 @@ int main(int argc, char **argv)
          return 1 ;
       }
    }
-   
+
+   //  09/20/23  Let's actually add support for this...
+   //            This will let me look at data for a specific month+year   
    if (year_to_select != 0  &&  month_to_select != 0) {
-      usage() ;
-      return 1 ;
+      printf("filter on month %u in year %u\n", month_to_select, year_to_select);
    }
-   if (year_to_select != 0) {
+   else if (year_to_select != 0) {
       printf("filter on year %u\n", year_to_select);
    }
    else if (month_to_select != 0) {
