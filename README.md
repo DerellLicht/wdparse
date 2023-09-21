@@ -1,9 +1,4 @@
 ## wdparse - read Weather Display log files files and present summary data.
-This application is copyright (c) 2023  Derell Licht  
-This program, and its source code, are distributed as unrestricted freeware.
-You can use them for any purpose, personal or commercial, in whole or in part,
-for any purpose that you wish, without contacting me further.
-
 This console utility reads the log files from the Weather Display program,
 and displays summaries for the data.  User can either get one summary for
 all existing data, or get separate summaries for each year of log files.
@@ -41,4 +36,16 @@ results by year.
 
 View [summaries by year](https://derelllicht.com/files/wdparse.out) here  
 Download [executable](http://derelllicht.com/files/wdparse.zip) here
+
+//**********************************************************************  
+This project is licenced under Creative Commons CC0 1.0 Universal;  
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The person who associated a work with this deed has dedicated the work to the
+public domain by waiving all of his or her rights to the work worldwide under
+copyright law, including all related and neighboring rights, to the extent
+allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial
+purposes, all without asking permission. 
 
