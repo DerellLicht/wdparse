@@ -166,6 +166,7 @@ int read_files(char *filespec)
             break ;
          }
          
+         //  set selector from command-line options
          uint select_mode = 0 ;
          if (year_to_select  != 0)  select_mode |= 1 ;
          if (month_to_select != 0)  select_mode |= 2 ;
