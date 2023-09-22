@@ -195,7 +195,7 @@ int read_files(char *filespec)
             }
             break ;
          
-         case 0:
+         case 0:  //  show summaries over all existing log files
          default:
             break ;
          }
