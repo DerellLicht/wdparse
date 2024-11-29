@@ -27,10 +27,9 @@ endif
 
 LIBS=-lshlwapi
 
-CPPSRC=wd_info.cpp wd_parse.cpp common.cpp qualify.cpp
-CPPSRC+=nsort.cpp
+CPPSRC=wd_info.cpp wd_parse.cpp nsort.cpp common.cpp qualify.cpp
 
-OBJS = $(CSRC:.c=.o) $(CPPSRC:.cpp=.o)
+OBJS = $(CPPSRC:.cpp=.o)
 
 #**************************************************************************
 %.o: %.cpp
@@ -55,13 +54,13 @@ dist:
 	zip wdparse.zip $(BIN) Readme.md
 
 wc:
-	wc -l *.cpp
+	wc -l $(CPPSRC)
 
 lint:
 	cmd /C "c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) -ic:\lint9 mingw.lnt -os(_lint.tmp) lintdefs.cpp $(CPPSRC)"
 
 depend: 
-	makedepend $(CSRC) $(CPPSRC)
+	makedepend $(CPPSRC)
 
 $(BIN): $(OBJS)
 	$(TOOLS)\g++ $(OBJS) $(LFLAGS) -o $(BIN) $(LIBS) 
