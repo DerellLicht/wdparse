@@ -7,8 +7,8 @@
 
 #include <windows.h>
 #include <stdio.h>
-#ifdef _lint
 #include <errno.h>
+#ifdef _lint
 #include <stdlib.h>
 #endif
 
@@ -18,8 +18,12 @@
 #include "common.h"
 #include "wd_info.h"
 
-static char fpath[1024] ;
+static char fpath[MAX_PATH_LEN+2] ;
 static char inpstr[260];
+
+//  name of drive+path without filenames
+char base_path[MAX_PATH_LEN+1] ;
+unsigned base_len ;  //  length of base_path
 
 //**********************************************************************************
 //  file line 1: format line:
@@ -288,26 +292,28 @@ static void status_spinner_update(void)
 //**********************************************************************************
 int process_wd_log_file(char *filename)
 {
-   uint lcount ;
+   uint lcount, valid ;
+   int inlen ;
    status_spinner_update();
    // 10,2021 102021lg.txt
    sprintf(fpath, "%s\\%s", base_path, filename) ;
    FILE *fptr = fopen(fpath, "rt");
    if (fptr == NULL) {
       printf("%3u: %s\n", (uint) errno, fpath);
-      return errno;
+      goto error_exit ;
    }
    //  read first line, which contains labels
-   int inlen = (int) fgets(inpstr, sizeof(inpstr), fptr);
+   inlen = (int) fgets(inpstr, sizeof(inpstr), fptr);
    if (inlen == 0) {
       printf("%3u: %s\n", errno, filename);  //lint !e705
-      return errno ;
+      goto error_exit ;
    }
    strip_newlines(inpstr);
-   uint valid = wd_parse_label_line(inpstr);
+   valid = wd_parse_label_line(inpstr);
    if (valid != 0) {
       printf("line parse error [%u]: %s\n", valid, filename);
-      goto exit_point ;
+      errno = EINVAL ;
+      goto error_exit ;
    }
    //  now, scan through all the rest of the lines, and collect data
    lcount = 0 ;
@@ -317,15 +323,20 @@ int process_wd_log_file(char *filename)
       int result = wd_parse_data_row(inpstr);
       if (result != 0) {
          printf("parse error [L %u]: %s\n", lcount, filename);
-         goto exit_point ;
+         errno = EINVAL ;
+         goto error_exit ;
       }
       
       //  next, check max/min values against static wd_current
       wd_check_records();
    }
    
-exit_point:   
    fclose(fptr);
-
    return 0 ;
+
+error_exit:
+   if (fptr != NULL) {
+      fclose(fptr);
+   }
+   return errno ;
 }

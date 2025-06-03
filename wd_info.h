@@ -19,6 +19,9 @@ typedef struct ffdata {
 
 extern ffdata_t *ftop  ;
 
+extern char base_path[MAX_PATH_LEN+1] ;
+extern unsigned base_len ;  //  length of base_path
+
 //  wd_parse.cpp
 void wd_init_summary_data(void);
 int process_wd_log_file(char *filename);

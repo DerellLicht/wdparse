@@ -77,7 +77,7 @@ int read_files(char *filespec)
       if (!show_all) {
          if ((fdata.dwFileAttributes & 
             (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_SYSTEM)) != 0) {
-            fn_okay = 0 ;
+            // fn_okay = 0 ;
             goto search_next_file;
          }
       }
@@ -239,7 +239,7 @@ static void usage(void)
 }
 
 //**********************************************************************************
-char file_spec[PATH_MAX+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
+char file_spec[MAX_PATH_LEN+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
 
 int main(int argc, char **argv)
 {
