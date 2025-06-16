@@ -291,7 +291,7 @@ int main(int argc, char **argv)
    //    strcpy(file_spec, ".");
    // }
 
-   uint qresult = qualify(file_spec) ;
+   uint qresult = qualify(file_spec) ; //lint !e732
    if (qresult == QUAL_INV_DRIVE) {
       printf("%s: 0x%X\n", file_spec, qresult);
       return 1 ;
