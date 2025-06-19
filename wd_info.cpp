@@ -7,7 +7,6 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include <stdlib.h>  //  PATH_MAX
 
 #include "common.h"
 #include "wd_info.h"
