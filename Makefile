@@ -100,4 +100,3 @@ wd_parse.o: der_libs/common.h wd_info.h
 nsort.o: der_libs/common.h wd_info.h
 der_libs\common_funcs.o: der_libs/common.h
 der_libs\qualify_orig.o: der_libs/common.h der_libs/qualify.h
-der_libs\qualify_orig.o: der_libs/conio_min.h
