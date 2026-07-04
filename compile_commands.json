@@ -1,0 +1,87 @@
+[
+ {
+  "directory": "D:\\SourceCode\\Git\\wdparse",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-Ider_libs",
+   "-DLEGACY_QUALIFY",
+   "wd_info.cpp",
+   "-o",
+   "wd_info.o"
+  ],
+  "file": "wd_info.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\wdparse",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-Ider_libs",
+   "-DLEGACY_QUALIFY",
+   "wd_parse.cpp",
+   "-o",
+   "wd_parse.o"
+  ],
+  "file": "wd_parse.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\wdparse",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-Ider_libs",
+   "-DLEGACY_QUALIFY",
+   "nsort.cpp",
+   "-o",
+   "nsort.o"
+  ],
+  "file": "nsort.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\wdparse",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-Ider_libs",
+   "-DLEGACY_QUALIFY",
+   "der_libs/common_funcs.cpp",
+   "-o",
+   "der_libs/common_funcs.o"
+  ],
+  "file": "der_libs/common_funcs.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\wdparse",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-Ider_libs",
+   "-DLEGACY_QUALIFY",
+   "der_libs/qualify_orig.cpp",
+   "-o",
+   "der_libs/qualify_orig.o"
+  ],
+  "file": "der_libs/qualify_orig.cpp"
+ }
+]
