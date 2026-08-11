@@ -1,6 +1,7 @@
 USE_DEBUG = NO
 USE_64BIT = NO
 #  Why am I using this??
+#  Because the new <string> version of qualify is Unicode only
 USE_LEGACY = YES
 
 include der_libs\tool_select.mak
@@ -25,6 +26,7 @@ IFLAGS += -Ider_libs
 IFLAGS += -DNOMAKEDEPEND
 
 ifeq ($(USE_LEGACY),YES)
+# this flag is used by qualify.h
 CFLAGS += -DLEGACY_QUALIFY
 endif
 
