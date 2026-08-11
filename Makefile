@@ -3,7 +3,7 @@ USE_64BIT = NO
 #  Why am I using this??
 USE_LEGACY = YES
 
-include ..\tool_select.mak 
+include der_libs\tool_select.mak
 
 ifeq ($(USE_DEBUG),YES)
 CFLAGS = -Wall -g -c
