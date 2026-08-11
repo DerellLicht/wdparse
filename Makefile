@@ -45,11 +45,7 @@ OBJS = $(CPPSRC:.cpp=.o)
 %.o: %.cpp
 	$(TOOLS)/g++ $(CFLAGS) $< -o $@
 
-ifeq ($(USE_64BIT),NO)
 BIN = wdparse.exe
-else
-BIN = wdparse64.exe
-endif
 
 all: $(BIN)
 
