@@ -23,7 +23,7 @@ Sample output from default scan:
 > wdparse
 show data for all years
 filespec: C:\WeatherDisplay\logfiles\*lg.txt, 125 found
-[\]
+  
 09/02/2017, 15:24  Max Temp:         110.6
 12/27/2015, 07:27  Min Temp:          28.5
 01/19/2021, 06:45  Max Wind Average:  19.8
@@ -37,15 +37,12 @@ results by year.
 View [summaries by year](wdparse.out) here  
 Download [executable](https://github.com/DerellLicht/wdparse/releases/tag/v1.00) here
 
-//**********************************************************************  
-This project is licenced under Creative Commons CC0 1.0 Universal;  
-https://creativecommons.org/publicdomain/zero/1.0/
+***
 
-The person who associated a work with this deed has dedicated the work to the
-public domain by waiving all of his or her rights to the work worldwide under
-copyright law, including all related and neighboring rights, to the extent
-allowed by law.
+This project is licensed under _Creative Commons CC0 1.0 Universal_   
 
-You can copy, modify, distribute and perform the work, even for commercial
-purposes, all without asking permission. 
+See the [License](LICENSE.txt) file for detailed information about this license
+***
 
+See [Changelog](CHANGELOG.md) for the full revision history.  
+  
