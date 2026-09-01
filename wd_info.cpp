@@ -132,7 +132,7 @@ int read_files(char *filespec)
          ftemp->ft = fdata.ftLastAccessTime;
 
          //  convert file size
-         u64toul iconv;
+         u64toul iconv {};
          iconv.u[0] = fdata.nFileSizeLow;
          iconv.u[1] = fdata.nFileSizeHigh;
          ftemp->fsize = iconv.i;
@@ -238,7 +238,8 @@ static void usage(void)
 }
 
 //**********************************************************************************
-char file_spec[MAX_PATH_LEN+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
+// char file_spec[MAX_PATH_LEN+1] = "C:\\WeatherDisplay\\logfiles\\*lg.txt" ;
+char file_spec[MAX_PATH_LEN+1] = R"(C:\WeatherDisplay\logfiles\*lg.txt)" ;
 
 int main(int argc, char **argv)
 {

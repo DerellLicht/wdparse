@@ -113,7 +113,7 @@ static uint wd_parse_label_line(char *instr)
 //  
 //**********************************************************************************
 //lint -esym(751, wd_data_p)  local typedef not referenced
-typedef struct wd_data_s {
+struct wd_data_s {
    uint day ;
    uint month ;
    uint year ;
@@ -131,18 +131,17 @@ typedef struct wd_data_s {
    double monthlyrain ;
    double yearlyrain ;
    double heatindex ;
-   wd_data_s *next ;
-} wd_data_t, *wd_data_p ;
+} ;
 
-static wd_data_t wd_totals ;
+static wd_data_s wd_totals ;
 
 //**********************************************************************************
-static wd_data_t wd_current ; //  export to caller
+static wd_data_s wd_current ; //  export to caller
 
 static int wd_parse_data_row(char *instr)
 {
-   // wd_data_p wdtemp = new wd_data_t ;
-   ZeroMemory((char *) &wd_current, sizeof(wd_data_t));
+   // wd_data_p wdtemp = new wd_data_s ;
+   ZeroMemory((char *) &wd_current, sizeof(wd_data_s));
    
 // 1  7 2023  0  0 63.7  79 57.1 29.867 0.0 0.0 307  0.000 0.000 0.050 31.799 63.7
 //31  7 2023  7 52 61.4  87 57.5 29.979 0.0 0.0  35  0.000 0.000 0.000 0.000 61.4
@@ -200,12 +199,12 @@ static int wd_parse_data_row(char *instr)
 }
 
 //**********************************************************************************
-static wd_data_t wd_max_temp ;
-static wd_data_t wd_min_temp ;
-static wd_data_t wd_max_wind ;
-static wd_data_t wd_max_gust ;
-static wd_data_t wd_max_rain_daily ;
-static wd_data_t wd_max_rain_yearly ;
+static wd_data_s wd_max_temp ;
+static wd_data_s wd_min_temp ;
+static wd_data_s wd_max_wind ;
+static wd_data_s wd_max_gust ;
+static wd_data_s wd_max_rain_daily ;
+static wd_data_s wd_max_rain_yearly ;
 
 static void wd_check_records(void)
 {
@@ -266,14 +265,14 @@ void wd_show_records(void)
 //**********************************************************************************
 void wd_init_summary_data(void)
 {
-   ZeroMemory((char *) &wd_totals, sizeof(wd_data_t));
-   ZeroMemory((char *) &wd_max_temp, sizeof(wd_data_t));
-   ZeroMemory((char *) &wd_min_temp, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_totals, sizeof(wd_data_s));
+   ZeroMemory((char *) &wd_max_temp, sizeof(wd_data_s));
+   ZeroMemory((char *) &wd_min_temp, sizeof(wd_data_s));
    wd_min_temp.temp = 1000.0 ;
-   ZeroMemory((char *) &wd_max_wind, sizeof(wd_data_t));
-   ZeroMemory((char *) &wd_max_gust, sizeof(wd_data_t));
-   ZeroMemory((char *) &wd_max_rain_daily, sizeof(wd_data_t));
-   ZeroMemory((char *) &wd_max_rain_yearly, sizeof(wd_data_t));
+   ZeroMemory((char *) &wd_max_wind, sizeof(wd_data_s));
+   ZeroMemory((char *) &wd_max_gust, sizeof(wd_data_s));
+   ZeroMemory((char *) &wd_max_rain_daily, sizeof(wd_data_s));
+   ZeroMemory((char *) &wd_max_rain_yearly, sizeof(wd_data_s));
 }
 
 //**********************************************************************************
