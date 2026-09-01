@@ -35,7 +35,7 @@ See wdparse.out in this repository, for an example of breaking out
 results by year.
 
 View [summaries by year](wdparse.out) here  
-Download [executable](http://derelllicht.42web.io/files/wdparse.zip) here
+Download [executable](https://github.com/DerellLicht/wdparse/releases/tag/v1.00) here
 
 //**********************************************************************  
 This project is licenced under Creative Commons CC0 1.0 Universal;  
