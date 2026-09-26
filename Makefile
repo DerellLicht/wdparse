@@ -2,7 +2,6 @@ USE_DEBUG = NO
 USE_64BIT = NO
 USE_UNICODE = NO
 USE_CLANG = NO
-# sadly, cygwin mingw does not support gdiplus...
 USE_CYGWIN = NO
 #  Why am I using this??
 #  Because the new <string> version of qualify is Unicode only
